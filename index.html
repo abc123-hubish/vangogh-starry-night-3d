@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#071529" />
+    <meta name="description" content="用 TypeScript 建模的梵高星夜：跟随复刻运镜，或自由飞入村庄、漩涡与月亮。" />
+    <title>梵高星夜 · 沉浸式 3D 场景</title>
+  </head>
+  <body>
+    <div id="app" class="tour">
+      <div id="scene" aria-label="梵高星夜三维场景"></div>
+      <div class="grain" aria-hidden="true"></div>
+      <div class="vignette" aria-hidden="true"></div>
+      <div class="loader" id="loader"><span class="loader-orbit">✳</span><span>正在进入星夜</span><i></i></div>
+      <div class="topbar" id="topbar">
+        <div class="brand"><strong>STARRY NIGHT</strong><span>梵高星夜 · 3D 场景</span></div>
+        <button class="mode-button" id="mode-button" type="button" aria-label="进入自由游玩模式">自由游玩 <span aria-hidden="true">↗</span></button>
+      </div>
+      <div class="hud" id="hud">
+        <button class="transport" id="play-button" type="button" aria-label="暂停运镜">Ⅱ</button>
+        <div class="timeline-wrap"><input id="timeline" type="range" min="0" max="1179" value="0" step="1" aria-label="运镜帧进度" /></div>
+        <span class="timecode" id="timecode">00:00 / 00:39</span>
+        <button class="fullscreen" id="fullscreen-button" type="button" aria-label="全屏">⛶</button>
+      </div>
+      <div class="explore-ui" id="explore-ui" aria-hidden="true">
+        <div class="explore-heading"><span>自由游玩 <em>FREE FLIGHT</em></span></div>
+        <p class="explore-help">W A S D 移动 · 拖动环视 · Shift 下降 · 空格上升 · 滚轮前进后退 · R 回到运镜位置</p>
+        <span class="crosshair" aria-hidden="true"></span>
+        <div class="touch-pad" aria-label="移动控制">
+          <button type="button" data-move="KeyW" aria-label="前进">↑</button>
+          <div><button type="button" data-move="KeyA" aria-label="向左">←</button><button type="button" data-move="KeyS" aria-label="后退">↓</button><button type="button" data-move="KeyD" aria-label="向右">→</button></div>
+        </div>
+        <div class="touch-vertical" aria-label="高度控制"><button type="button" data-move="Space" aria-label="上升">升</button><button type="button" data-move="ShiftLeft" aria-label="下降">降</button></div>
+      </div>
+      <p class="hint" id="hint">空格暂停 · ← / → 逐帧 · V 自由游玩</p>
+      <p class="error" id="error" role="alert"></p>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
