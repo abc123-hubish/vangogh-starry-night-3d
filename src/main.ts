@@ -13,6 +13,14 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
 const params = new URLSearchParams(location.search);
 const seekTime = Number(params.get('t'));
 
+function renderPixelRatio(width: number, height: number): number {
+  const compactScreen = Math.min(width, height) <= 600;
+  const maxRatio = compactScreen ? 2 : 1.25;
+  const pixelBudget = compactScreen ? 1_600_000 : 4_000_000;
+  const budgetRatio = Math.sqrt(pixelBudget / (width * height));
+  return Math.max(1, Math.min(window.devicePixelRatio || 1, maxRatio, budgetRatio));
+}
+
 const app = document.querySelector<HTMLDivElement>('#app')!;
 const mount = document.querySelector<HTMLDivElement>('#scene')!;
 const loader = document.querySelector<HTMLDivElement>('#loader')!;
@@ -29,7 +37,7 @@ scene.background = new THREE.Color(0x071a31);
 scene.fog = new THREE.FogExp2(0x0b2a47, 0.00013);
 const camera = new THREE.PerspectiveCamera(60, innerWidth / innerHeight, .1, 6500);
 const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: 'high-performance' });
-renderer.setPixelRatio(Math.min(devicePixelRatio, narrow ? 1 : 1.25));
+renderer.setPixelRatio(renderPixelRatio(innerWidth, innerHeight));
 renderer.setSize(innerWidth, innerHeight);
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -716,6 +724,11 @@ document.querySelectorAll<HTMLButtonElement>('[data-move]').forEach(button => {
 });
 window.addEventListener('resize', () => {
   camera.aspect = innerWidth / innerHeight;
+  const pixelRatio = renderPixelRatio(innerWidth, innerHeight);
+  if (renderer.getPixelRatio() !== pixelRatio) {
+    renderer.setPixelRatio(pixelRatio);
+    composer.setPixelRatio(pixelRatio);
+  }
   renderer.setSize(innerWidth, innerHeight);
   composer.setSize(innerWidth, innerHeight);
   camera.updateProjectionMatrix();
